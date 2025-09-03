@@ -1,4 +1,4 @@
-// ---- MENU & LEVEL SELECT ----
+// ==== MENU & LEVEL SELECT ====
 const mainMenu=document.getElementById("mainMenu");
 const levelSelect=document.getElementById("levelSelect");
 const levelButtons=document.getElementById("levelButtons");
@@ -10,10 +10,8 @@ let totalScore=0;
 const levelUnlockScore=[0,100,300,600,1000,1500,2100,2800,3600,4500]; 
 
 startBtn.onclick=showLevelSelect;
-
 function showLevelSelect(){
-  mainMenu.style.display="none";
-  levelSelect.style.display="flex";
+  mainMenu.style.display="none"; levelSelect.style.display="flex";
   levelButtons.innerHTML="";
   for(let i=1;i<=11;i++){
     const btn=document.createElement("button");
@@ -26,14 +24,9 @@ function showLevelSelect(){
     levelButtons.appendChild(btn);
   }
 }
+function backToMenu(){ gameDiv.style.display="none"; levelSelect.style.display="none"; mainMenu.style.display="flex"; }
 
-function backToMenu(){
-  gameDiv.style.display="none"; 
-  levelSelect.style.display="none"; 
-  mainMenu.style.display="flex";
-}
-
-// ---- GAME ELEMENTS ----
+// ==== GAME ELEMENTS ====
 const player=document.getElementById("player");
 const catchLine=document.getElementById("catchLine");
 const scoreValue=document.getElementById("scoreValue");
@@ -56,7 +49,7 @@ let score,lives,playerX,isGameOver,spawnTimer,gamePaused=false;
 let musicOn=true,soundOn=true;
 let fallSpeed=5,spawnDelay=1000;
 
-// ---- START GAME ----
+// ==== START GAME ====
 function startGame(level){
   levelSelect.style.display="none"; gameDiv.style.display="block";
   currentLevel=level; score=0; lives=3; isGameOver=false;
@@ -71,7 +64,7 @@ function startGame(level){
   spawnItem();
 }
 
-// ---- PLAYER CONTROL ----
+// ==== PLAYER CONTROL MOUSE ====
 gameDiv.addEventListener("mousemove", e=>{
   if(isGameOver||gamePaused) return;
   const rect=gameDiv.getBoundingClientRect();
@@ -81,18 +74,19 @@ gameDiv.addEventListener("mousemove", e=>{
   catchLine.style.left=(playerX+player.clientWidth/2-catchLine.clientWidth/2)+"px";
 });
 
-// ---- PLAYER CONTROL TOUCH ----
-gameDiv.addEventListener("touchmove", e => {
-  if (isGameOver || gamePaused) return;
-  const touch = e.touches[0];
-  const rect = gameDiv.getBoundingClientRect();
-  playerX = touch.clientX - rect.left - player.clientWidth / 2;
-  playerX = Math.max(0, Math.min(playerX, gameDiv.clientWidth - player.clientWidth));
-  player.style.left = playerX + "px";
-  catchLine.style.left = (playerX + player.clientWidth / 2 - catchLine.clientWidth / 2) + "px";
-});
+// ==== PLAYER CONTROL TOUCH ====
+gameDiv.addEventListener("touchmove", e=>{
+  e.preventDefault();
+  if(isGameOver||gamePaused) return;
+  const touch=e.touches[0];
+  const rect=gameDiv.getBoundingClientRect();
+  playerX=touch.clientX-rect.left-player.clientWidth/2;
+  playerX=Math.max(0,Math.min(playerX,gameDiv.clientWidth-player.clientWidth));
+  player.style.left=playerX+"px";
+  catchLine.style.left=(playerX+player.clientWidth/2-catchLine.clientWidth/2)+"px";
+},{passive:false});
 
-// ---- SPAWN ITEM ----
+// ==== SPAWN ITEM ====
 function spawnItem(){
   if(isGameOver||gamePaused) return;
   const box=document.createElement("div"); box.classList.add("item");
@@ -121,7 +115,7 @@ function spawnItem(){
   spawnTimer=setTimeout(spawnItem,spawnDelay);
 }
 
-// ---- LIVES & GAME OVER ----
+// ==== LIVES & GAME OVER ====
 function updateLives(){
   livesDisplay.innerText=lives===3?"❤️❤️❤️":lives===2?"❤️❤️":lives===1?"❤️":"💀";
   if(lives<=0) gameOver();
@@ -134,19 +128,13 @@ function gameOver(){
 }
 restartBtn.onclick=()=>startGame(currentLevel);
 
-// ---- SETTINGS ----
-settingsBtn.onclick=()=>{
-  gamePaused=true;
-  settingsMenu.style.display="block";
-}
-closeSettings.onclick=()=>{
-  settingsMenu.style.display="none";
-  gamePaused=false;
-}
+// ==== SETTINGS ====
+settingsBtn.onclick=()=>{ gamePaused=true; settingsMenu.style.display="block"; }
+closeSettings.onclick=()=>{ settingsMenu.style.display="none"; gamePaused=false; }
 musicToggle.onchange=()=>{musicOn=musicToggle.checked; if(musicOn&&!isGameOver) bgMusic.play(); else bgMusic.pause();}
 soundToggle.onchange=()=>{soundOn=soundToggle.checked;}
 
-// ---- STARS BACKGROUND ----
+// ==== STARS BACKGROUND ====
 const canvas=document.getElementById("stars");
 const ctx=canvas.getContext("2d"); let stars=[];
 function resizeCanvas(){ canvas.width=window.innerWidth; canvas.height=window.innerHeight; }
