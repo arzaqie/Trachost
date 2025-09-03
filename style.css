@@ -1,4 +1,4 @@
-/* ===== BODY & FONT ===== */
+/* ===== GLOBAL ===== */
 body {
   margin: 0;
   font-family: 'Press Start 2P', monospace;
@@ -20,6 +20,7 @@ body {
   background: #111;
   z-index: 100;
 }
+
 #mainMenu h1,
 #levelSelect h2 {
   text-align: center;
@@ -27,7 +28,6 @@ body {
   margin-bottom: 20px;
 }
 
-/* ===== BUTTONS ===== */
 #mainMenu button,
 #levelSelect button,
 #levelButtons button {
@@ -40,18 +40,20 @@ body {
   cursor: pointer;
   transition: 0.2s;
 }
+
 #levelButtons {
   display: flex;
   flex-wrap: wrap;
   justify-content: center;
 }
+
 #levelButtons button.locked {
   background: #555;
   color: #ccc;
   cursor: not-allowed;
 }
 
-/* ===== GAME AREA ===== */
+/* ===== GAME ===== */
 #game {
   position: relative;
   width: 100vw;
@@ -60,14 +62,16 @@ body {
   background: linear-gradient(180deg, #1a1a1a, #000);
 }
 
-/* ===== BACKGROUND STARS ===== */
+/* BACKGROUND STARS */
 #stars {
   position: absolute;
   width: 100%;
   height: 100%;
+  top: 0;
+  left: 0;
 }
 
-/* ===== PLAYER ===== */
+/* PLAYER & CATCH LINE */
 #player {
   position: absolute;
   bottom: 20px;
@@ -79,7 +83,6 @@ body {
   z-index: 10;
 }
 
-/* ===== CATCH LINE ===== */
 #catchLine {
   position: absolute;
   bottom: 0;
@@ -89,10 +92,10 @@ body {
   left: 50%;
   transform: translateX(-50%);
   border-radius: 4px;
-  /* ✅ hanya satu garis bawah, ikut posisi player */
+  z-index: 11;
 }
 
-/* ===== SCORE ===== */
+/* SCORE, LIVES & SETTINGS */
 #score {
   position: absolute;
   top: 10px;
@@ -100,15 +103,16 @@ body {
   transform: translateX(-50%);
   text-align: center;
 }
+
 #scoreText {
   font-size: 12px;
 }
+
 #scoreValue {
   font-size: 18px;
   margin-top: 4px;
 }
 
-/* ===== LIVES ===== */
 #lives {
   position: absolute;
   top: 10px;
@@ -116,7 +120,6 @@ body {
   font-size: 16px;
 }
 
-/* ===== SETTINGS BUTTON ===== */
 #settingsBtn {
   position: absolute;
   top: 10px;
@@ -125,7 +128,7 @@ body {
   cursor: pointer;
 }
 
-/* ===== SETTINGS MENU & GAME OVER ===== */
+/* SETTINGS & GAME OVER */
 #settingsMenu,
 #gameOver {
   position: absolute;
@@ -142,7 +145,6 @@ body {
   z-index: 50;
 }
 
-/* ===== RESTART BUTTON ===== */
 #restart {
   margin-top: 15px;
   padding: 10px 20px;
@@ -154,17 +156,18 @@ body {
   cursor: pointer;
 }
 
-/* ===== ITEM / EMOJI ===== */
+/* ITEMS */
 .item {
   position: absolute;
   font-size: 24px;
   top: 0;
   user-select: none;
   pointer-events: none;
+  z-index: 12;
 }
 
-/* ===== RESPONSIVE HP / MOBILE ===== */
-@media(max-width: 600px) {
+/* ===== MEDIA QUERY (HP) ===== */
+@media(max-width:600px){
   #player {
     width: 120px;
     height: 30px;
@@ -179,4 +182,4 @@ body {
   #scoreValue {
     font-size: 20px;
   }
-  }
+}
