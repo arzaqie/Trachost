@@ -1,4 +1,3 @@
-/* ===== GLOBAL ===== */
 body {
   margin: 0;
   font-family: 'Press Start 2P', monospace;
@@ -7,9 +6,8 @@ body {
   color: #fff;
 }
 
-/* ===== MAIN MENU & LEVEL SELECT ===== */
-#mainMenu,
-#levelSelect {
+/* MENU */
+#mainMenu, #levelSelect {
   position: absolute;
   width: 100%;
   height: 100%;
@@ -20,17 +18,8 @@ body {
   background: #111;
   z-index: 100;
 }
-
-#mainMenu h1,
-#levelSelect h2 {
-  text-align: center;
-  font-size: 24px;
-  margin-bottom: 20px;
-}
-
-#mainMenu button,
-#levelSelect button,
-#levelButtons button {
+#mainMenu h1, #levelSelect h2 { text-align: center; font-size: 24px; margin-bottom: 20px; }
+#mainMenu button, #levelSelect button, #levelButtons button {
   font-family: 'Press Start 2P';
   font-size: 14px;
   margin: 5px;
@@ -40,38 +29,30 @@ body {
   cursor: pointer;
   transition: 0.2s;
 }
-
 #levelButtons {
   display: flex;
   flex-wrap: wrap;
   justify-content: center;
 }
-
 #levelButtons button.locked {
   background: #555;
   color: #ccc;
   cursor: not-allowed;
 }
 
-/* ===== GAME ===== */
+/* GAME */
 #game {
   position: relative;
   width: 100vw;
   height: 100vh;
   overflow: hidden;
-  background: linear-gradient(180deg, #1a1a1a, #000);
+  background: linear-gradient(180deg,#1a1a1a,#000);
 }
-
-/* BACKGROUND STARS */
 #stars {
   position: absolute;
   width: 100%;
   height: 100%;
-  top: 0;
-  left: 0;
 }
-
-/* PLAYER & CATCH LINE */
 #player {
   position: absolute;
   bottom: 20px;
@@ -82,7 +63,6 @@ body {
   box-shadow: 0 0 10px lime;
   z-index: 10;
 }
-
 #catchLine {
   position: absolute;
   bottom: 0;
@@ -94,8 +74,6 @@ body {
   border-radius: 4px;
   z-index: 11;
 }
-
-/* SCORE, LIVES & SETTINGS */
 #score {
   position: absolute;
   top: 10px;
@@ -103,39 +81,18 @@ body {
   transform: translateX(-50%);
   text-align: center;
 }
-
-#scoreText {
-  font-size: 12px;
-}
-
-#scoreValue {
-  font-size: 18px;
-  margin-top: 4px;
-}
-
-#lives {
-  position: absolute;
-  top: 10px;
-  left: 10px;
-  font-size: 16px;
-}
-
-#settingsBtn {
-  position: absolute;
-  top: 10px;
-  right: 10px;
-  font-size: 20px;
-  cursor: pointer;
-}
+#scoreText { font-size: 12px; }
+#scoreValue { font-size: 18px; margin-top: 4px; }
+#lives { position: absolute; top: 10px; left: 10px; font-size: 16px; }
+#settingsBtn { position: absolute; top: 10px; right: 10px; font-size: 20px; cursor: pointer; }
 
 /* SETTINGS & GAME OVER */
-#settingsMenu,
-#gameOver {
+#settingsMenu, #gameOver {
   position: absolute;
   top: 50%;
   left: 50%;
-  transform: translate(-50%, -50%);
-  background: rgba(0, 0, 0, 0.95);
+  transform: translate(-50%,-50%);
+  background: rgba(0,0,0,0.95);
   padding: 20px;
   border-radius: 10px;
   display: none;
@@ -144,7 +101,6 @@ body {
   box-shadow: 0 0 20px lime;
   z-index: 50;
 }
-
 #restart {
   margin-top: 15px;
   padding: 10px 20px;
@@ -155,31 +111,17 @@ body {
   font-size: 14px;
   cursor: pointer;
 }
-
-/* ITEMS */
 .item {
   position: absolute;
   font-size: 24px;
   top: 0;
   user-select: none;
   pointer-events: none;
-  z-index: 12;
 }
 
-/* ===== MEDIA QUERY (HP) ===== */
 @media(max-width:600px){
-  #player {
-    width: 120px;
-    height: 30px;
-  }
-  #catchLine {
-    width: 150px;
-    height: 8px;
-  }
-  .item {
-    font-size: 28px;
-  }
-  #scoreValue {
-    font-size: 20px;
-  }
+  #player { width:120px; height:30px; }
+  #catchLine { width:150px; height:8px; }
+  .item { font-size:28px; }
+  #scoreValue { font-size:20px; }
 }
