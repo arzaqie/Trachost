@@ -13,6 +13,7 @@
   <div id="topBar"></div>
   <div id="game">
     <canvas id="stars"></canvas> <!-- background animasi bintang -->
+    <div id="catchLine"></div> <!-- garis hijau -->
     <div id="player"></div>
     <div id="score">Score: 0</div>
     <div id="lives">❤️❤️❤️</div>
@@ -20,9 +21,24 @@
 
     <div id="settingsMenu">
       <h3>⚙️ Settings</h3>
-      <label><input type="checkbox" id="musicToggle" checked> Musik</label><br>
-      <label><input type="checkbox" id="soundToggle" checked> Sound Efek</label><br>
+      <label><input type="checkbox" id="musicToggle" checked> Musik</label>
+      <label><input type="checkbox" id="soundToggle" checked> Sound Efek</label>
       <button id="closeSettings">Tutup</button>
+    </div>
+
+    <<div id="levelMenu">
+  <h3>Level</h3>
+  <button onclick="selectLevel(1)">Level 1</button>
+  <button onclick="selectLevel(2)">Level 2</button>
+  <button onclick="selectLevel(3)">Level 3</button>
+  <button onclick="selectLevel(4)">Level 4</button>
+  <button onclick="selectLevel(5)">Level 5</button>
+  <button onclick="selectLevel(6)">Level 6</button>
+  <button onclick="selectLevel(7)">Level 7</button>
+  <button onclick="selectLevel(8)">Level 8</button>
+  <button onclick="selectLevel(9)">Level 9</button>
+  <button onclick="selectLevel(10)">Level 10</button>
+  <button onclick="selectLevel(11)">Level 11</button>
     </div>
 
     <div id="gameOver">
@@ -36,6 +52,7 @@
   <audio id="bgMusic" src="bgmusic.mp3" loop></audio>
   <audio id="catchSound" src="catch.mp3"></audio>
   <audio id="missSound" src="miss.mp3"></audio>
+  <audio id="lineHitSound" src="linehit.mp3"></audio>
 
   <!-- Script -->
   <script src="script.js"></script>
