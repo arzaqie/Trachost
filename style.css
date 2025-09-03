@@ -33,6 +33,16 @@ body {
   background: transparent;
 }
 
+#catchLine {
+  position: absolute;
+  bottom: 40px;
+  left: 0;
+  width: 100%;
+  height: 5px;
+  background: lime;
+  box-shadow: 0 0 10px lime;
+}
+
 #player {
   position: absolute;
   bottom: 20px;
@@ -53,12 +63,7 @@ body {
   height: 30px;
   background: red;
   border-radius: 5px;
-  animation: fall 3s linear forwards;
   box-shadow: 0 0 8px red;
-}
-@keyframes fall {
-  from { transform: translateY(-40px) rotate(0deg); }
-  to { transform: translateY(100vh) rotate(360deg); }
 }
 
 #score, #lives {
@@ -79,12 +84,11 @@ body {
   font-size: 20px;
   cursor: pointer;
   transition: transform 0.2s;
+  z-index: 999;
 }
-#settingsBtn:hover {
-  transform: rotate(90deg);
-}
+#settingsBtn:hover { transform: rotate(90deg); }
 
-#settingsMenu {
+#settingsMenu, #levelMenu {
   position: absolute;
   top: 50%;
   left: 50%;
@@ -97,13 +101,14 @@ body {
   border: 2px solid lime;
   box-shadow: 0 0 20px lime;
   animation: popup 0.3s ease;
+  z-index: 1000;
 }
 @keyframes popup {
   from { transform: translate(-50%, -50%) scale(0.7); opacity: 0; }
   to { transform: translate(-50%, -50%) scale(1); opacity: 1; }
 }
-#settingsMenu h3 { margin-top: 0; font-size: 14px; }
-#settingsMenu label { display: block; margin: 10px 0; font-size: 12px; }
+#settingsMenu h3, #levelMenu h3 { margin-top: 0; font-size: 14px; }
+#settingsMenu label, #levelMenu button { display: block; margin: 10px 0; font-size: 12px; }
 
 #gameOver {
   position: absolute;
@@ -119,6 +124,7 @@ body {
   border: 2px solid red;
   box-shadow: 0 0 20px red;
   animation: popup 0.3s ease;
+  z-index: 1000;
 }
 #restart {
   display: block;
