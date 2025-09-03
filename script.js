@@ -1,17 +1,129 @@
-body { margin:0; font-family:'Press Start 2P',monospace; overflow:hidden; background:#0f0f0f; color:#fff; }
-#mainMenu,#levelSelect,#game{position:absolute;width:100%;height:100%;top:0;left:0;display:flex;align-items:center;justify-content:center;flex-direction:column;background:#0f0f0f;}
-button{font-family:'Press Start 2P',monospace;font-size:14px;margin:5px;padding:10px 20px;background:lime;color:black;border:none;border-radius:8px;cursor:pointer;}
-#levelSelect{display:none;} #game{display:none;}
-#stars{position:absolute;width:100%;height:100%;}
-#catchLine{position:absolute;bottom:40px;width:80px;height:5px;background:lime;box-shadow:0 0 10px lime;}
-#player{position:absolute;bottom:20px;left:50%;transform:translateX(-50%);width:80px;height:20px;background:lime;border-radius:5px;box-shadow:0 0 10px lime;transition:left 0.1s;}
-.item{position:absolute;top:0;width:40px;height:40px;font-size:32px;text-align:center;line-height:40px;pointer-events:none;animation:rotateItem 3s linear infinite;}
-@keyframes rotateItem{from{transform:rotate(0deg);} to{transform:rotate(360deg);}}
-#lives{position:absolute;top:15px;left:15px;font-size:18px;background:rgba(0,0,0,0.5);padding:6px 10px;border-radius:5px;}
-#score{position:absolute;top:15px;left:50%;transform:translateX(-50%);text-align:center;background:rgba(0,0,0,0.5);padding:6px 10px;border-radius:5px;}
-#scoreText{font-size:12px;} #scoreValue{font-size:18px;font-weight:bold;}
-#settingsBtn{position:absolute;top:15px;right:15px;font-size:20px;cursor:pointer;}
-#settingsMenu,#gameOver{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);background:rgba(0,0,0,0.95);padding:20px;border-radius:15px;text-align:center;display:none;box-shadow:0 0 20px lime;}
-#settingsMenu h3,#gameOver p{margin:10px 0;}
-#settingsMenu button,#gameOver button{display:block;margin:10px auto;padding:10px 20px;background:lime;color:black;border:none;border-radius:8px;cursor:pointer;font-family:'Press Start 2P',monospace;}
-.menuBtn{margin:10px;background:lime;color:black;}
+// ---- MENU & LEVEL SELECT ----
+const mainMenu=document.getElementById("mainMenu");
+const levelSelect=document.getElementById("levelSelect");
+const levelButtons=document.getElementById("levelButtons");
+const gameDiv=document.getElementById("game");
+
+let currentLevel=1;
+
+function showLevelSelect(){
+  mainMenu.style.display="none";
+  levelSelect.style.display="flex";
+  levelButtons.innerHTML="";
+  for(let i=1;i<=11;i++){
+    const btn=document.createElement("button");
+    btn.innerText=i<=10?`Level ${i}`:`Level ${i} (Coming Soon)`;
+    btn.disabled=i>10;
+    btn.onclick=()=>startGame(i);
+    levelButtons.appendChild(btn);
+  }
+}
+function backToMenu(){
+  gameDiv.style.display="none"; levelSelect.style.display="none"; mainMenu.style.display="flex";
+}
+
+// ---- GAME ELEMENTS ----
+const player=document.getElementById("player");
+const catchLine=document.getElementById("catchLine");
+const scoreValue=document.getElementById("scoreValue");
+const livesDisplay=document.getElementById("lives");
+const gameOverScreen=document.getElementById("gameOver");
+const finalScore=document.getElementById("finalScore");
+const restartBtn=document.getElementById("restart");
+
+const bgMusic=document.getElementById("bgMusic");
+const lineHitSound=document.getElementById("lineHitSound");
+const missSound=document.getElementById("missSound");
+
+const settingsBtn=document.getElementById("settingsBtn");
+const settingsMenu=document.getElementById("settingsMenu");
+const musicToggle=document.getElementById("musicToggle");
+const soundToggle=document.getElementById("soundToggle");
+const closeSettings=document.getElementById("closeSettings");
+
+let score,lives,playerX,isGameOver,spawnTimer;
+let musicOn=true,soundOn=true;
+let fallSpeed=5,spawnDelay=1000;
+
+// ---- START GAME ----
+function startGame(level){
+  levelSelect.style.display="none"; gameDiv.style.display="block";
+  currentLevel=level;
+  score=0; lives=3; isGameOver=false;
+  fallSpeed=5+level; spawnDelay=Math.max(300,1000-50*level);
+  playerX=gameDiv.clientWidth/2-player.clientWidth/2;
+  player.style.left=playerX+"px";
+  catchLine.style.left=(playerX+player.clientWidth/2-catchLine.clientWidth/2)+"px";
+  scoreValue.innerText=score; livesDisplay.innerText="❤️❤️❤️";
+  gameOverScreen.style.display="none";
+  document.querySelectorAll(".item").forEach(b=>b.remove());
+  if(musicOn) bgMusic.play();
+  spawnItem();
+}
+
+// ---- PLAYER CONTROL ----
+gameDiv.addEventListener("mousemove", e=>{
+  if(isGameOver) return;
+  const rect=gameDiv.getBoundingClientRect();
+  playerX=e.clientX-rect.left-player.clientWidth/2;
+  playerX=Math.max(0,Math.min(playerX,gameDiv.clientWidth-player.clientWidth));
+  player.style.left=playerX+"px";
+  catchLine.style.left=(playerX+player.clientWidth/2-catchLine.clientWidth/2)+"px";
+});
+
+// ---- SPAWN ITEM ----
+function spawnItem(){
+  if(isGameOver) return;
+  const box=document.createElement("div"); box.classList.add("item");
+  const emojis=["⭐","🌟","💎","🔥","🍀"];
+  box.innerText=emojis[Math.floor(Math.random()*emojis.length)];
+  box.style.left=Math.random()*(gameDiv.clientWidth-40)+"px";
+  gameDiv.appendChild(box);
+
+  let fall=setInterval(()=>{
+    if(isGameOver){ clearInterval(fall); return; }
+    let top=parseInt(box.style.top||"0");
+    box.style.top=top+fallSpeed+"px";
+
+    const boxRect=box.getBoundingClientRect();
+    const lineRect=catchLine.getBoundingClientRect();
+
+    if(boxRect.bottom>=lineRect.top && boxRect.top<=lineRect.bottom &&
+       boxRect.left+20>=lineRect.left && boxRect.right-20<=lineRect.right){
+      score++; scoreValue.innerText=score;
+      if(soundOn) lineHitSound.play(); box.remove(); clearInterval(fall);
+    }
+    if(top>gameDiv.clientHeight){ lives--; updateLives(); if(soundOn) missSound.play(); box.remove(); clearInterval(fall);}
+  },30);
+
+  spawnTimer=setTimeout(spawnItem,spawnDelay);
+}
+
+// ---- LIVES & GAME OVER ----
+function updateLives(){
+  livesDisplay.innerText=lives===3?"❤️❤️❤️":lives===2?"❤️❤️":lives===1?"❤️":"💀";
+  if(lives<=0) gameOver();
+}
+function gameOver(){
+  isGameOver=true; clearTimeout(spawnTimer);
+  finalScore.innerText="Skor Akhir: "+score;
+  gameOverScreen.style.display="block";
+  bgMusic.pause();
+}
+restartBtn.onclick=()=>startGame(currentLevel);
+
+// ---- SETTINGS ----
+settingsBtn.onclick=()=>settingsMenu.style.display="block";
+closeSettings.onclick=()=>settingsMenu.style.display="none";
+musicToggle.onchange=()=>{musicOn=musicToggle.checked; if(musicOn&&!isGameOver) bgMusic.play(); else bgMusic.pause();}
+soundToggle.onchange=()=>{soundOn=soundToggle.checked;}
+
+// ---- STARS BACKGROUND ----
+const canvas=document.getElementById("stars");
+const ctx=canvas.getContext("2d"); let stars=[];
+function resizeCanvas(){ canvas.width=window.innerWidth; canvas.height=window.innerHeight; }
+resizeCanvas(); window.addEventListener("resize",resizeCanvas);
+function createStars(count){ stars=[]; for(let i=0;i<count;i++){ stars.push({x:Math.random()*canvas.width,y:Math.random()*canvas.height,size:Math.random()*2,speed:Math.random()*1+0.5}); } }
+createStars(100);
+function animateStars(){ ctx.clearRect(0,0,canvas.width,canvas.height); ctx.fillStyle="white"; stars.forEach(star=>{ ctx.beginPath(); ctx.arc(star.x,star.y,star.size,0,Math.PI*2); ctx.fill(); star.y+=star.speed; if(star.y>canvas.height){ star.y=0; star.x=Math.random()*canvas.width; } }); requestAnimationFrame(animateStars); }
+animateStars();
