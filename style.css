@@ -1,31 +1,21 @@
+/* ---------------------- BODY & GAME CONTAINER ---------------------- */
 body {
   margin: 0;
-  background: #0f0f0f;
   font-family: 'Press Start 2P', monospace;
   overflow: hidden;
+  background: #0f0f0f;
   color: #fff;
-}
-
-/* Garis hijau di atas */
-#topBar {
-  width: 100%;
-  height: 5px;
-  background: lime;
-  animation: glow 2s infinite alternate;
-}
-@keyframes glow {
-  from { box-shadow: 0 0 5px lime; }
-  to { box-shadow: 0 0 15px lime; }
 }
 
 #game {
   position: relative;
   width: 100vw;
-  height: calc(100vh - 5px);
+  height: 100vh;
   overflow: hidden;
   background: linear-gradient(180deg, #1a1a1a, #000);
 }
 
+/* ---------------------- BACKGROUND STARS ---------------------- */
 #stars {
   position: absolute;
   width: 100%;
@@ -33,6 +23,7 @@ body {
   background: transparent;
 }
 
+/* ---------------------- CATCH LINE ---------------------- */
 #catchLine {
   position: absolute;
   bottom: 40px;
@@ -43,6 +34,7 @@ body {
   box-shadow: 0 0 10px lime;
 }
 
+/* ---------------------- PLAYER ---------------------- */
 #player {
   position: absolute;
   bottom: 20px;
@@ -56,76 +48,130 @@ body {
   transition: left 0.1s;
 }
 
-.box {
+/* ---------------------- ITEM KEREN ---------------------- */
+.item {
   position: absolute;
   top: 0;
-  width: 30px;
-  height: 30px;
-  background: red;
-  border-radius: 5px;
-  box-shadow: 0 0 8px red;
+  width: 40px;
+  height: 40px;
+  font-size: 32px;
+  text-align: center;
+  line-height: 40px;
+  pointer-events: none;
+  animation: rotateItem 3s linear infinite;
 }
 
-#score, #lives {
+@keyframes rotateItem {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+
+/* ---------------------- LIVES & SCORE ---------------------- */
+#lives {
   position: absolute;
   top: 15px;
-  font-size: 14px;
+  left: 15px;
+  font-size: 18px;
   background: rgba(0,0,0,0.5);
   padding: 6px 10px;
   border-radius: 5px;
 }
-#score { left: 15px; }
-#lives { right: 15px; }
 
+#score {
+  position: absolute;
+  top: 15px;
+  left: 50%;
+  transform: translateX(-50%);
+  text-align: center;
+  background: rgba(0,0,0,0.5);
+  padding: 6px 10px;
+  border-radius: 5px;
+}
+
+#scoreText {
+  font-size: 12px;
+}
+
+#scoreValue {
+  font-size: 18px;
+  font-weight: bold;
+}
+
+/* ---------------------- SETTINGS BUTTON ---------------------- */
 #settingsBtn {
   position: absolute;
   top: 15px;
-  right: 60px;
+  right: 15px;
   font-size: 20px;
   cursor: pointer;
-  transition: transform 0.2s;
-  z-index: 999;
 }
-#settingsBtn:hover { transform: rotate(90deg); }
 
-#settingsMenu, #levelMenu {
+/* ---------------------- MAIN MENU ---------------------- */
+#mainMenu {
   position: absolute;
   top: 50%;
   left: 50%;
-  transform: translate(-50%,-50%);
+  transform: translate(-50%, -50%);
+  background: rgba(0,0,0,0.95);
+  padding: 30px;
+  border-radius: 15px;
+  text-align: center;
+  z-index: 1000;
+}
+
+#mainMenu h1 {
+  margin-bottom: 20px;
+}
+
+#mainMenu button {
+  display: block;
+  margin: 10px auto;
+  padding: 10px 20px;
+  background: lime;
+  color: black;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  font-family: 'Press Start 2P', monospace;
+}
+
+/* ---------------------- SETTINGS & LEVEL MENU ---------------------- */
+#settingsMenu, #levelMenu, #gameOver {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
   background: rgba(0,0,0,0.95);
   padding: 20px;
   border-radius: 10px;
   display: none;
   text-align: center;
-  border: 2px solid lime;
   box-shadow: 0 0 20px lime;
   animation: popup 0.3s ease;
   z-index: 1000;
 }
+
 @keyframes popup {
   from { transform: translate(-50%, -50%) scale(0.7); opacity: 0; }
   to { transform: translate(-50%, -50%) scale(1); opacity: 1; }
 }
-#settingsMenu h3, #levelMenu h3 { margin-top: 0; font-size: 14px; }
-#settingsMenu label, #levelMenu button { display: block; margin: 10px 0; font-size: 12px; }
 
-#gameOver {
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  font-size: 18px;
-  background: rgba(0,0,0,0.9);
-  padding: 20px;
-  border-radius: 10px;
-  display: none;
-  text-align: center;
-  border: 2px solid red;
-  box-shadow: 0 0 20px red;
-  animation: popup 0.3s ease;
-  z-index: 1000;
+#settingsMenu h3, #levelMenu h3 {
+  margin-top: 0;
+  font-size: 14px;
 }
+
+#settingsMenu label, #levelMenu button {
+  display: block;
+  margin: 10px 0;
+  font-size: 12px;
+}
+
+/* ---------------------- GAME OVER ---------------------- */
+#gameOver p {
+  margin: 5px 0;
+}
+
 #restart {
   display: block;
   margin-top: 15px;
