@@ -3,10 +3,13 @@ const mainMenu=document.getElementById("mainMenu");
 const levelSelect=document.getElementById("levelSelect");
 const levelButtons=document.getElementById("levelButtons");
 const gameDiv=document.getElementById("game");
+const startBtn=document.getElementById("startBtn");
 
 let currentLevel=1;
 let totalScore=0;
-const levelUnlockScore=[0,100,300,600,1000,1500,2100,2800,3600,4500]; // unlock threshold per level
+const levelUnlockScore=[0,100,300,600,1000,1500,2100,2800,3600,4500]; 
+
+startBtn.onclick=showLevelSelect;
 
 function showLevelSelect(){
   mainMenu.style.display="none";
@@ -23,8 +26,11 @@ function showLevelSelect(){
     levelButtons.appendChild(btn);
   }
 }
+
 function backToMenu(){
-  gameDiv.style.display="none"; levelSelect.style.display="none"; mainMenu.style.display="flex";
+  gameDiv.style.display="none"; 
+  levelSelect.style.display="none"; 
+  mainMenu.style.display="flex";
 }
 
 // ---- GAME ELEMENTS ----
@@ -95,7 +101,7 @@ function spawnItem(){
     if(boxRect.bottom>=lineRect.top && boxRect.top<=lineRect.bottom &&
        boxRect.left+20>=lineRect.left && boxRect.right-20<=lineRect.right){
       score++; scoreValue.innerText=score;
-      totalScore++; // kumulatif score untuk unlock
+      totalScore++; 
       if(soundOn) lineHitSound.play(); box.remove(); clearInterval(fall);
     }
     if(top>gameDiv.clientHeight){ lives--; updateLives(); if(soundOn) missSound.play(); box.remove(); clearInterval(fall);}
@@ -122,7 +128,7 @@ settingsBtn.onclick=()=>{
   gamePaused=true;
   settingsMenu.style.display="block";
 }
-closeSettings.onclick()=>{
+closeSettings.onclick=()=>{
   settingsMenu.style.display="none";
   gamePaused=false;
 }
