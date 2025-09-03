@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Game Tangkap Kotak</title>
+  <!-- Font -->
+  <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" rel="stylesheet">
+  <!-- CSS -->
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <div id="topBar"></div>
+  <div id="game">
+    <canvas id="stars"></canvas> <!-- background animasi bintang -->
+    <div id="player"></div>
+    <div id="score">Score: 0</div>
+    <div id="lives">❤️❤️❤️</div>
+    <div id="settingsBtn">⚙️</div>
+
+    <div id="settingsMenu">
+      <h3>⚙️ Settings</h3>
+      <label><input type="checkbox" id="musicToggle" checked> Musik</label><br>
+      <label><input type="checkbox" id="soundToggle" checked> Sound Efek</label><br>
+      <button id="closeSettings">Tutup</button>
+    </div>
+
+    <div id="gameOver">
+      <p>🎮 GAME OVER 🎮</p>
+      <p id="finalScore"></p>
+      <button id="restart">Main Lagi</button>
+    </div>
+  </div>
+
+  <!-- Audio -->
+  <audio id="bgMusic" src="bgmusic.mp3" loop></audio>
+  <audio id="catchSound" src="catch.mp3"></audio>
+  <audio id="missSound" src="miss.mp3"></audio>
+
+  <!-- Script -->
+  <script src="script.js"></script>
+</body>
+</html>
