@@ -22,7 +22,6 @@ const mainMenu = document.getElementById("mainMenu");
 const playBtn = document.getElementById("playBtn");
 const menuLevelBtn = document.getElementById("menuLevelBtn");
 const menuSettingsBtn = document.getElementById("menuSettingsBtn");
-
 const levelMenu = document.getElementById("levelMenu");
 
 let score, lives, playerX, isGameOver, spawnTimer;
@@ -44,14 +43,22 @@ const levels = [
   {level:11,fallSpeed:0,spawnDelay:0,unlockScore:10000,comingSoon:true}
 ];
 
+// ---------------- INIT ----------------
+window.onload = () => {
+  mainMenu.style.display="block";
+  levelMenu.style.display="none";
+  settingsMenu.style.display="none";
+  gameOverScreen.style.display="none";
+};
+
 // ---------------- MENU ----------------
-playBtn.onclick = () => { mainMenu.style.display="none"; startGame(); };
-menuLevelBtn.onclick = () => { mainMenu.style.display="none"; levelMenu.style.display="block"; };
-menuSettingsBtn.onclick = () => { mainMenu.style.display="none"; settingsMenu.style.display="block"; };
-settingsBtn.onclick = () => { settingsMenu.style.display="block"; };
-closeSettings.onclick = () => { settingsMenu.style.display="none"; };
-musicToggle.onchange = () => { musicOn = musicToggle.checked; if(musicOn && !isGameOver) bgMusic.play(); else bgMusic.pause(); };
-soundToggle.onchange = () => { soundOn = soundToggle.checked; };
+playBtn.onclick = ()=>{mainMenu.style.display="none"; startGame();}
+menuLevelBtn.onclick = ()=>{mainMenu.style.display="none"; levelMenu.style.display="block";}
+menuSettingsBtn.onclick = ()=>{mainMenu.style.display="none"; settingsMenu.style.display="block";}
+settingsBtn.onclick = ()=>{settingsMenu.style.display="block";}
+closeSettings.onclick = ()=>{settingsMenu.style.display="none";}
+musicToggle.onchange = ()=>{musicOn=musicToggle.checked;if(musicOn && !isGameOver) bgMusic.play(); else bgMusic.pause();}
+soundToggle.onchange = ()=>{soundOn=soundToggle.checked;}
 
 // ---------------- LEVEL SELECT ----------------
 function selectLevel(level){
@@ -62,22 +69,18 @@ function selectLevel(level){
     levelMenu.style.display="none"; startGame();
   } else alert("Kamu butuh skor "+lvl.unlockScore+" untuk membuka level ini!");
 }
-
-function backToMenu(){
-  levelMenu.style.display="none"; mainMenu.style.display="block";
-}
+function backToMenu(){ levelMenu.style.display="none"; mainMenu.style.display="block"; }
 
 // ---------------- START GAME ----------------
 function startGame(){
   score=0; lives=3; isGameOver=false;
   playerX = game.clientWidth/2 - player.clientWidth/2;
   player.style.left = playerX+"px"; updateCatchLine();
-  scoreValue.innerText = score;
-  livesDisplay.innerText = "❤️❤️❤️";
+  scoreValue.innerText = score; livesDisplay.innerText = "❤️❤️❤️";
   gameOverScreen.style.display = "none";
   fallSpeed = levels[currentLevel-1].fallSpeed;
   spawnDelay = levels[currentLevel-1].spawnDelay;
-  document.querySelectorAll(".item").forEach(b => b.remove());
+  document.querySelectorAll(".item").forEach(b=>b.remove());
   if(musicOn) bgMusic.play();
   spawnItem();
 }
@@ -91,7 +94,6 @@ game.addEventListener("mousemove", e=>{
   player.style.left = playerX + "px";
   updateCatchLine();
 });
-
 function updateCatchLine(){ catchLine.style.left = (playerX+player.clientWidth/2-40) + "px"; }
 
 // ---------------- SPAWN ITEM ----------------
@@ -105,23 +107,38 @@ function spawnItem(){
 
   let fall = setInterval(()=>{
     if(isGameOver){ clearInterval(fall); return; }
-    let top = parseInt(box.style.top || "0");
-    box.style.top = top + fallSpeed + "px";
+    let top = parseInt(box.style.top||"0"); box.style.top = top+fallSpeed+"px";
 
     const boxRect = box.getBoundingClientRect();
     const lineRect = catchLine.getBoundingClientRect();
-
     if(boxRect.bottom>=lineRect.top && boxRect.top<=lineRect.bottom &&
        boxRect.left+20>=lineRect.left && boxRect.right-20<=lineRect.right){
-      score++; scoreValue.innerText = score;
+      score++; scoreValue.innerText=score;
       if(soundOn) lineHitSound.play(); box.remove(); clearInterval(fall);
       if(score%5===0){ fallSpeed+=1; spawnDelay=Math.max(300, spawnDelay-50); }
     }
 
     if(top>game.clientHeight){
-      lives--; updateLives();
-      if(soundOn) missSound.play(); box.remove(); clearInterval(fall);
+      lives--; updateLives(); if(soundOn) missSound.play(); box.remove(); clearInterval(fall);
     }
   },30);
 
-  spawnTimer = setTimeout(spawnItem,
+  spawnTimer = setTimeout(spawnItem, spawnDelay);
+}
+
+// ---------------- UPDATE LIVES ----------------
+function updateLives(){
+  if(lives===3) livesDisplay.innerText="❤️❤️❤️";
+  else if(lives===2) livesDisplay.innerText="❤️❤️";
+  else if(lives===1) livesDisplay.innerText="❤️";
+  else{ livesDisplay.innerText="💀"; gameOver(); }
+}
+
+// ---------------- GAME OVER ----------------
+function gameOver(){
+  isGameOver=true; clearTimeout(spawnTimer);
+  finalScore.innerText = "Skor Akhir: "+score; gameOverScreen.style.display="block";
+  bgMusic.pause();
+}
+restartBtn.onclick = ()=>startGame();
+backMenuBtn.onclick = ()=>{gameOverScreen.style.display="none"; mainMenu.style.display="block";}
