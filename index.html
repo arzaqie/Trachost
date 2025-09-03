@@ -3,22 +3,31 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Game Tangkap Item</title>
+<title>Game Tangkap Item Final</title>
 <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="style.css">
 </head>
 <body>
 
+<!-- MAIN MENU -->
+<div id="mainMenu">
+  <h1>Tangkap Item</h1>
+  <button class="menuBtn" onclick="showLevelSelect()">Mulai</button>
+</div>
+
+<!-- LEVEL SELECT -->
+<div id="levelSelect">
+  <h2>Pilih Level</h2>
+  <div id="levelButtons"></div>
+  <button onclick="backToMenu()">Kembali</button>
+</div>
+
+<!-- GAME -->
 <div id="game">
   <canvas id="stars"></canvas>
-
-  <!-- Garis bawah untuk catch item -->
   <div id="catchLine"></div>
-
-  <!-- Player -->
   <div id="player"></div>
 
-  <!-- HUD -->
   <div id="lives">❤️❤️❤️</div>
   <div id="score">
     <div id="scoreText">Score</div>
@@ -26,15 +35,6 @@
   </div>
   <div id="settingsBtn">⚙️</div>
 
-  <!-- Main Menu -->
-  <div id="mainMenu">
-    <h1>🎯 Tangkap Item 🎯</h1>
-    <button id="playBtn">Mainkan</button>
-    <button id="menuLevelBtn">Level</button>
-    <button id="menuSettingsBtn">Settings</button>
-  </div>
-
-  <!-- Settings Menu -->
   <div id="settingsMenu">
     <h3>⚙️ Settings</h3>
     <label><input type="checkbox" id="musicToggle" checked> Musik</label>
@@ -42,39 +42,19 @@
     <button id="closeSettings">Tutup</button>
   </div>
 
-  <!-- Level Menu -->
-  <div id="levelMenu">
-    <h3>Pilih Level</h3>
-    <div class="levelGrid">
-      <button onclick="selectLevel(1)">1</button>
-      <button onclick="selectLevel(2)">2</button>
-      <button onclick="selectLevel(3)">3</button>
-      <button onclick="selectLevel(4)">4</button>
-      <button onclick="selectLevel(5)">5</button>
-      <button onclick="selectLevel(6)">6</button>
-      <button onclick="selectLevel(7)">7</button>
-      <button onclick="selectLevel(8)">8</button>
-      <button onclick="selectLevel(9)">9</button>
-      <button onclick="selectLevel(10)">10</button>
-      <button onclick="selectLevel(11)">11 🔒</button>
-    </div>
-    <button onclick="backToMenu()">Kembali</button>
-  </div>
-
-  <!-- Game Over -->
   <div id="gameOver">
     <p>🎮 GAME OVER 🎮</p>
     <p id="finalScore"></p>
     <button id="restart">Main Lagi</button>
-    <button id="backMenu">Main Menu</button>
+    <button onclick="backToMenu()">Main Menu</button>
   </div>
 </div>
 
-<!-- Audio -->
-<audio id="bgMusic" src="bgmusic.mp3" loop></audio>
-<audio id="lineHitSound" src="linehit.mp3"></audio>
-<audio id="missSound" src="miss.mp3"></audio>
+<!-- AUDIO -->
+<audio id="bgMusic" src="audio/bgmusic.mp3" loop></audio>
+<audio id="lineHitSound" src="audio/linehit.mp3"></audio>
+<audio id="missSound" src="audio/miss.mp3"></audio>
 
 <script src="script.js"></script>
 </body>
-      </html>
+</html>
