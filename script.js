@@ -81,6 +81,17 @@ gameDiv.addEventListener("mousemove", e=>{
   catchLine.style.left=(playerX+player.clientWidth/2-catchLine.clientWidth/2)+"px";
 });
 
+// ---- PLAYER CONTROL TOUCH ----
+gameDiv.addEventListener("touchmove", e => {
+  if (isGameOver || gamePaused) return;
+  const touch = e.touches[0];
+  const rect = gameDiv.getBoundingClientRect();
+  playerX = touch.clientX - rect.left - player.clientWidth / 2;
+  playerX = Math.max(0, Math.min(playerX, gameDiv.clientWidth - player.clientWidth));
+  player.style.left = playerX + "px";
+  catchLine.style.left = (playerX + player.clientWidth / 2 - catchLine.clientWidth / 2) + "px";
+});
+
 // ---- SPAWN ITEM ----
 function spawnItem(){
   if(isGameOver||gamePaused) return;
