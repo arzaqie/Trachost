@@ -1,86 +1,17 @@
-body {
-  margin: 0;
-  font-family: 'Press Start 2P', monospace;
-  overflow: hidden;
-  background: #0f0f0f;
-  color: #fff;
-}
-
-#game {
-  position: relative;
-  width: 100vw;
-  height: 100vh;
-  overflow: hidden;
-  background: linear-gradient(180deg, #1a1a1a, #000);
-}
-
-#stars { position: absolute; width: 100%; height: 100%; }
-
-#catchLine {
-  position: absolute;
-  bottom: 40px;
-  left: 50%;
-  transform: translateX(-50%);
-  width: 80px;
-  height: 5px;
-  background: lime;
-  box-shadow: 0 0 10px lime;
-}
-
-#player {
-  position: absolute;
-  bottom: 20px;
-  left: 50%;
-  transform: translateX(-50%);
-  width: 80px;
-  height: 20px;
-  background: lime;
-  border-radius: 5px;
-  box-shadow: 0 0 10px lime;
-  transition: left 0.1s;
-}
-
-.item {
-  position: absolute;
-  top: 0;
-  width: 40px;
-  height: 40px;
-  font-size: 32px;
-  text-align: center;
-  line-height: 40px;
-  pointer-events: none;
-  animation: rotateItem 3s linear infinite;
-}
-
-@keyframes rotateItem {
-  from { transform: rotate(0deg); }
-  to { transform: rotate(360deg); }
-}
-
-#lives { position: absolute; top: 15px; left: 15px; font-size: 18px; background: rgba(0,0,0,0.5); padding: 6px 10px; border-radius: 5px; }
-#score { position: absolute; top: 15px; left: 50%; transform: translateX(-50%); text-align: center; background: rgba(0,0,0,0.5); padding: 6px 10px; border-radius: 5px; }
-#scoreText { font-size: 12px; } #scoreValue { font-size: 18px; font-weight: bold; }
-#settingsBtn { position: absolute; top: 15px; right: 15px; font-size: 20px; cursor: pointer; }
-
-#mainMenu, #settingsMenu, #levelMenu, #gameOver {
-  position: absolute; top: 50%; left: 50%;
-  transform: translate(-50%, -50%);
-  background: rgba(0,0,0,0.95); padding: 20px; border-radius: 15px;
-  text-align: center; z-index: 1000; display: none; box-shadow: 0 0 20px lime;
-  animation: popup 0.3s ease;
-}
-
-@keyframes popup { from { transform: translate(-50%, -50%) scale(0.7); opacity: 0; } to { transform: translate(-50%, -50%) scale(1); opacity: 1; } }
-
-#mainMenu h1 { margin-bottom: 20px; }
-#mainMenu button,
-#settingsMenu button,
-#levelMenu button,
-#gameOver button {
-  display: block; margin: 10px auto; padding: 10px 20px;
-  background: lime; color: black; border: none; border-radius: 8px;
-  cursor: pointer; font-family: 'Press Start 2P', monospace;
-}
-
-.levelGrid { display: grid; grid-template-columns: repeat(4, 60px); gap: 10px; justify-content: center; margin: 10px 0; }
-.levelGrid button:hover { transform: scale(1.1); }
+body { margin:0; font-family:'Press Start 2P',monospace; overflow:hidden; background:#0f0f0f; color:#fff; }
+#mainMenu,#levelSelect,#game{position:absolute;width:100%;height:100%;top:0;left:0;display:flex;align-items:center;justify-content:center;flex-direction:column;background:#0f0f0f;}
+button{font-family:'Press Start 2P',monospace;font-size:14px;margin:5px;padding:10px 20px;background:lime;color:black;border:none;border-radius:8px;cursor:pointer;}
+#levelSelect{display:none;} #game{display:none;}
+#stars{position:absolute;width:100%;height:100%;}
+#catchLine{position:absolute;bottom:40px;width:80px;height:5px;background:lime;box-shadow:0 0 10px lime;}
+#player{position:absolute;bottom:20px;left:50%;transform:translateX(-50%);width:80px;height:20px;background:lime;border-radius:5px;box-shadow:0 0 10px lime;transition:left 0.1s;}
+.item{position:absolute;top:0;width:40px;height:40px;font-size:32px;text-align:center;line-height:40px;pointer-events:none;animation:rotateItem 3s linear infinite;}
+@keyframes rotateItem{from{transform:rotate(0deg);} to{transform:rotate(360deg);}}
+#lives{position:absolute;top:15px;left:15px;font-size:18px;background:rgba(0,0,0,0.5);padding:6px 10px;border-radius:5px;}
+#score{position:absolute;top:15px;left:50%;transform:translateX(-50%);text-align:center;background:rgba(0,0,0,0.5);padding:6px 10px;border-radius:5px;}
+#scoreText{font-size:12px;} #scoreValue{font-size:18px;font-weight:bold;}
+#settingsBtn{position:absolute;top:15px;right:15px;font-size:20px;cursor:pointer;}
+#settingsMenu,#gameOver{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);background:rgba(0,0,0,0.95);padding:20px;border-radius:15px;text-align:center;display:none;box-shadow:0 0 20px lime;}
+#settingsMenu h3,#gameOver p{margin:10px 0;}
+#settingsMenu button,#gameOver button{display:block;margin:10px auto;padding:10px 20px;background:lime;color:black;border:none;border-radius:8px;cursor:pointer;font-family:'Press Start 2P',monospace;}
+.menuBtn{margin:10px;background:lime;color:black;}
