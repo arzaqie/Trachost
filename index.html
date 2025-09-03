@@ -44,18 +44,21 @@
 
   <!-- Level Menu -->
   <div id="levelMenu">
-    <h3>Level</h3>
-    <button onclick="selectLevel(1)">Level 1</button>
-    <button onclick="selectLevel(2)">Level 2</button>
-    <button onclick="selectLevel(3)">Level 3</button>
-    <button onclick="selectLevel(4)">Level 4</button>
-    <button onclick="selectLevel(5)">Level 5</button>
-    <button onclick="selectLevel(6)">Level 6</button>
-    <button onclick="selectLevel(7)">Level 7</button>
-    <button onclick="selectLevel(8)">Level 8</button>
-    <button onclick="selectLevel(9)">Level 9</button>
-    <button onclick="selectLevel(10)">Level 10</button>
-    <button onclick="selectLevel(11)">Level 11</button>
+    <h3>Pilih Level</h3>
+    <div class="levelGrid">
+      <button onclick="selectLevel(1)">1</button>
+      <button onclick="selectLevel(2)">2</button>
+      <button onclick="selectLevel(3)">3</button>
+      <button onclick="selectLevel(4)">4</button>
+      <button onclick="selectLevel(5)">5</button>
+      <button onclick="selectLevel(6)">6</button>
+      <button onclick="selectLevel(7)">7</button>
+      <button onclick="selectLevel(8)">8</button>
+      <button onclick="selectLevel(9)">9</button>
+      <button onclick="selectLevel(10)">10</button>
+      <button onclick="selectLevel(11)">11 🔒</button>
+    </div>
+    <button onclick="backToMenu()">Kembali</button>
   </div>
 
   <!-- Game Over -->
@@ -63,6 +66,7 @@
     <p>🎮 GAME OVER 🎮</p>
     <p id="finalScore"></p>
     <button id="restart">Main Lagi</button>
+    <button id="backMenu">Main Menu</button>
   </div>
 </div>
 
