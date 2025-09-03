@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Gada namaa</title>
+<title>Game Tangkap Emoji</title>
 <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="style.css">
 </head>
@@ -11,7 +11,7 @@
 
 <!-- MAIN MENU -->
 <div id="mainMenu">
-  <h1>Tangkap Item</h1>
+  <h1>🎮 Tangkap Emoji 🎮</h1>
   <button id="startBtn">Mulai</button>
 </div>
 
@@ -25,14 +25,14 @@
 <!-- GAME -->
 <div id="game">
   <canvas id="stars"></canvas>
-  <div id="catchLine"></div>
   <div id="player"></div>
+  <div id="catchLine"></div>
 
-  <div id="lives">❤️❤️❤️</div>
   <div id="score">
     <div id="scoreText">Score</div>
     <div id="scoreValue">0</div>
   </div>
+  <div id="lives">❤️❤️❤️</div>
   <div id="settingsBtn">⚙️</div>
 
   <div id="settingsMenu">
@@ -46,14 +46,13 @@
     <p>🎮 GAME OVER 🎮</p>
     <p id="finalScore"></p>
     <button id="restart">Main Lagi</button>
-    <button onclick="backToMenu()">Main Menu</button>
   </div>
 </div>
 
 <!-- AUDIO -->
-<audio id="bgMusic" src="audio/bgmusic.mp3" loop></audio>
-<audio id="lineHitSound" src="audio/linehit.mp3"></audio>
-<audio id="missSound" src="audio/miss.mp3"></audio>
+<audio id="bgMusic" src="bgmusic.mp3" loop></audio>
+<audio id="lineHitSound" src="hit.mp3"></audio>
+<audio id="missSound" src="miss.mp3"></audio>
 
 <script src="script.js"></script>
 </body>
