@@ -42,8 +42,20 @@ function updateScoreAndLevel(){pipes.forEach(p=>{if(p.x+p.width===bird.x)score++
 // ----- Game Loop -----
 function gameLoop(){if(gameOver)return;ctx.clearRect(0,0,canvas.width,canvas.height);drawBird();drawPipes();drawMonsters();drawPowerUps();bird.dy+=0.5;bird.y+=bird.dy;updatePipes();updateMonsters();updatePowerUps();updateScoreAndLevel();if(checkCollision()){gameOver=true;restartBtn.style.display='inline-block';}else{frame++;requestAnimationFrame(gameLoop);}}
 
-// ----- Controls -----
-document.addEventListener('keydown',()=>{if(!gameOver)bird.dy=-8;});
+// Keyboard
+document.addEventListener('keydown', () => {
+    if (!gameOver) bird.dy = -8;
+});
+
+// Touch / Klik layar untuk mobile
+canvas.addEventListener('touchstart', (e) => {
+    e.preventDefault(); // mencegah scroll
+    if (!gameOver) bird.dy = -8;
+});
+
+canvas.addEventListener('mousedown', (e) => {
+    if (!gameOver) bird.dy = -8;
+});
 
 // ----- Reset Game -----
 function resetGame(){bird={x:50,y:300,width:20,height:20,dy:0,color:'yellow',skin:'default'};pipes=[];monsters=[];powerUps=[];frame=0;score=0;level=0;gameOver=false;}
