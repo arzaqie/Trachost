@@ -7,11 +7,13 @@ const startBtn=document.getElementById("startBtn");
 
 let currentLevel=1;
 let totalScore=0;
-const levelUnlockScore=[0,100,300,600,1000,1500,2100,2800,3600,4500]; 
+const levelUnlockScore=[0,100,300,600,1000,1500,2100,2800,3600,4500];
 
 startBtn.onclick=showLevelSelect;
+
 function showLevelSelect(){
-  mainMenu.style.display="none"; levelSelect.style.display="flex";
+  mainMenu.style.display="none";
+  levelSelect.style.display="flex";
   levelButtons.innerHTML="";
   for(let i=1;i<=11;i++){
     const btn=document.createElement("button");
@@ -61,30 +63,18 @@ function startGame(level){
   gameOverScreen.style.display="none";
   document.querySelectorAll(".item").forEach(b=>b.remove());
   if(musicOn) bgMusic.play();
+  gamePaused=false;
   spawnItem();
 }
 
-// ==== PLAYER CONTROL MOUSE ====
-gameDiv.addEventListener("mousemove", e=>{
-  if(isGameOver||gamePaused) return;
-  const rect=gameDiv.getBoundingClientRect();
-  playerX=e.clientX-rect.left-player.clientWidth/2;
-  playerX=Math.max(0,Math.min(playerX,gameDiv.clientWidth-player.clientWidth));
+// ==== PLAYER CONTROL ====
+function movePlayer(x){
+  playerX=Math.max(0,Math.min(x,gameDiv.clientWidth-player.clientWidth));
   player.style.left=playerX+"px";
   catchLine.style.left=(playerX+player.clientWidth/2-catchLine.clientWidth/2)+"px";
-});
-
-// ==== PLAYER CONTROL TOUCH ====
-gameDiv.addEventListener("touchmove", e=>{
-  e.preventDefault();
-  if(isGameOver||gamePaused) return;
-  const touch=e.touches[0];
-  const rect=gameDiv.getBoundingClientRect();
-  playerX=touch.clientX-rect.left-player.clientWidth/2;
-  playerX=Math.max(0,Math.min(playerX,gameDiv.clientWidth-player.clientWidth));
-  player.style.left=playerX+"px";
-  catchLine.style.left=(playerX+player.clientWidth/2-catchLine.clientWidth/2)+"px";
-},{passive:false});
+}
+gameDiv.addEventListener("mousemove", e=>{ if(isGameOver||gamePaused) return; const rect=gameDiv.getBoundingClientRect(); movePlayer(e.clientX-rect.left-player.clientWidth/2); });
+gameDiv.addEventListener("touchmove", e=>{ e.preventDefault(); if(isGameOver||gamePaused) return; const rect=gameDiv.getBoundingClientRect(); movePlayer(e.touches[0].clientX-rect.left-player.clientWidth/2); },{passive:false});
 
 // ==== SPAWN ITEM ====
 function spawnItem(){
@@ -99,33 +89,22 @@ function spawnItem(){
     if(isGameOver||gamePaused){ clearInterval(fall); return; }
     let top=parseInt(box.style.top||"0");
     box.style.top=top+fallSpeed+"px";
-
     const boxRect=box.getBoundingClientRect();
     const lineRect=catchLine.getBoundingClientRect();
 
     if(boxRect.bottom>=lineRect.top && boxRect.top<=lineRect.bottom &&
        boxRect.left+20>=lineRect.left && boxRect.right-20<=lineRect.right){
-      score++; scoreValue.innerText=score;
-      totalScore++; 
+      score++; scoreValue.innerText=score; totalScore++;
       if(soundOn) lineHitSound.play(); box.remove(); clearInterval(fall);
     }
     if(top>gameDiv.clientHeight){ lives--; updateLives(); if(soundOn) missSound.play(); box.remove(); clearInterval(fall);}
   },30);
-
   spawnTimer=setTimeout(spawnItem,spawnDelay);
 }
 
 // ==== LIVES & GAME OVER ====
-function updateLives(){
-  livesDisplay.innerText=lives===3?"❤️❤️❤️":lives===2?"❤️❤️":lives===1?"❤️":"💀";
-  if(lives<=0) gameOver();
-}
-function gameOver(){
-  isGameOver=true; clearTimeout(spawnTimer);
-  finalScore.innerText="Skor Akhir: "+score;
-  gameOverScreen.style.display="block";
-  bgMusic.pause();
-}
+function updateLives(){ livesDisplay.innerText=lives===3?"❤️❤️❤️":lives===2?"❤️❤️":lives===1?"❤️":"💀"; if(lives<=0) gameOver(); }
+function gameOver(){ isGameOver=true; clearTimeout(spawnTimer); finalScore.innerText="Skor Akhir: "+score; gameOverScreen.style.display="block"; bgMusic.pause(); }
 restartBtn.onclick=()=>startGame(currentLevel);
 
 // ==== SETTINGS ====
@@ -136,7 +115,8 @@ soundToggle.onchange=()=>{soundOn=soundToggle.checked;}
 
 // ==== STARS BACKGROUND ====
 const canvas=document.getElementById("stars");
-const ctx=canvas.getContext("2d"); let stars=[];
+const ctx=canvas.getContext("2d");
+let stars=[];
 function resizeCanvas(){ canvas.width=window.innerWidth; canvas.height=window.innerHeight; }
 resizeCanvas(); window.addEventListener("resize",resizeCanvas);
 function createStars(count){ stars=[]; for(let i=0;i<count;i++){ stars.push({x:Math.random()*canvas.width,y:Math.random()*canvas.height,size:Math.random()*2,speed:Math.random()*1+0.5}); } }
