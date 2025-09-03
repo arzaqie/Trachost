@@ -1,59 +1,16 @@
 <!DOCTYPE html>
 <html lang="id">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Game Tangkap Item</title>
-  <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="style.css">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Flappy Bird Mini</title>
+    <link rel="stylesheet" href="style.css">
 </head>
 <body>
-  <!-- MAIN MENU -->
-  <div id="mainMenu">
-    <h1>🎮 Tangkap Item 🎮</h1>
-    <button id="startBtn">Mulai</button>
-  </div>
+    <h1>Flappy Bird Mini</h1>
+    <canvas id="gameCanvas" width="400" height="600"></canvas>
+    <p>Skor: <span id="score">0</span></p>
 
-  <!-- LEVEL SELECT -->
-  <div id="levelSelect">
-    <h2>Pilih Level</h2>
-    <div id="levelButtons"></div>
-    <button onclick="backToMenu()">Kembali</button>
-  </div>
-
-  <!-- GAME -->
-  <div id="game">
-    <canvas id="stars"></canvas>
-    <div id="player"></div>
-    <div id="catchLine"></div>
-    <div id="score">
-      <div id="scoreText">Score</div>
-      <div id="scoreValue">0</div>
-    </div>
-    <div id="lives">❤️❤️❤️</div>
-    <div id="settingsBtn">⚙️</div>
-
-    <!-- SETTINGS -->
-    <div id="settingsMenu">
-      <h3>⚙️ Settings</h3>
-      <label><input type="checkbox" id="musicToggle" checked> Musik</label><br>
-      <label><input type="checkbox" id="soundToggle" checked> Sound Efek</label><br>
-      <button id="closeSettings">Tutup</button>
-    </div>
-
-    <!-- GAME OVER -->
-    <div id="gameOver">
-      <p>🎮 GAME OVER 🎮</p>
-      <p id="finalScore"></p>
-      <button id="restart">Main Lagi</button>
-    </div>
-  </div>
-
-  <!-- AUDIO -->
-  <audio id="bgMusic" src="bgmusic.mp3" loop></audio>
-  <audio id="lineHitSound" src="catch.mp3"></audio>
-  <audio id="missSound" src="miss.mp3"></audio>
-
-  <script src="script.js"></script>
+    <script src="script.js"></script>
 </body>
 </html>
