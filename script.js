@@ -5,6 +5,8 @@ const levelButtons=document.getElementById("levelButtons");
 const gameDiv=document.getElementById("game");
 
 let currentLevel=1;
+let totalScore=0;
+const levelUnlockScore=[0,100,300,600,1000,1500,2100,2800,3600,4500]; // unlock threshold per level
 
 function showLevelSelect(){
   mainMenu.style.display="none";
@@ -12,8 +14,11 @@ function showLevelSelect(){
   levelButtons.innerHTML="";
   for(let i=1;i<=11;i++){
     const btn=document.createElement("button");
-    btn.innerText=i<=10?`Level ${i}`:`Level ${i} (Coming Soon)`;
-    btn.disabled=i>10;
+    if(i<=10){
+      if(totalScore>=levelUnlockScore[i-1]){
+        btn.innerText=`Level ${i}`; btn.disabled=false;
+      } else { btn.innerText=`🔒 Level ${i}`; btn.disabled=true; btn.classList.add("locked"); }
+    } else { btn.innerText=`Level 11 (Coming Soon)`; btn.disabled=true; btn.classList.add("locked"); }
     btn.onclick=()=>startGame(i);
     levelButtons.appendChild(btn);
   }
@@ -41,15 +46,14 @@ const musicToggle=document.getElementById("musicToggle");
 const soundToggle=document.getElementById("soundToggle");
 const closeSettings=document.getElementById("closeSettings");
 
-let score,lives,playerX,isGameOver,spawnTimer;
+let score,lives,playerX,isGameOver,spawnTimer,gamePaused=false;
 let musicOn=true,soundOn=true;
 let fallSpeed=5,spawnDelay=1000;
 
 // ---- START GAME ----
 function startGame(level){
   levelSelect.style.display="none"; gameDiv.style.display="block";
-  currentLevel=level;
-  score=0; lives=3; isGameOver=false;
+  currentLevel=level; score=0; lives=3; isGameOver=false;
   fallSpeed=5+level; spawnDelay=Math.max(300,1000-50*level);
   playerX=gameDiv.clientWidth/2-player.clientWidth/2;
   player.style.left=playerX+"px";
@@ -63,7 +67,7 @@ function startGame(level){
 
 // ---- PLAYER CONTROL ----
 gameDiv.addEventListener("mousemove", e=>{
-  if(isGameOver) return;
+  if(isGameOver||gamePaused) return;
   const rect=gameDiv.getBoundingClientRect();
   playerX=e.clientX-rect.left-player.clientWidth/2;
   playerX=Math.max(0,Math.min(playerX,gameDiv.clientWidth-player.clientWidth));
@@ -73,7 +77,7 @@ gameDiv.addEventListener("mousemove", e=>{
 
 // ---- SPAWN ITEM ----
 function spawnItem(){
-  if(isGameOver) return;
+  if(isGameOver||gamePaused) return;
   const box=document.createElement("div"); box.classList.add("item");
   const emojis=["⭐","🌟","💎","🔥","🍀"];
   box.innerText=emojis[Math.floor(Math.random()*emojis.length)];
@@ -81,7 +85,7 @@ function spawnItem(){
   gameDiv.appendChild(box);
 
   let fall=setInterval(()=>{
-    if(isGameOver){ clearInterval(fall); return; }
+    if(isGameOver||gamePaused){ clearInterval(fall); return; }
     let top=parseInt(box.style.top||"0");
     box.style.top=top+fallSpeed+"px";
 
@@ -91,6 +95,7 @@ function spawnItem(){
     if(boxRect.bottom>=lineRect.top && boxRect.top<=lineRect.bottom &&
        boxRect.left+20>=lineRect.left && boxRect.right-20<=lineRect.right){
       score++; scoreValue.innerText=score;
+      totalScore++; // kumulatif score untuk unlock
       if(soundOn) lineHitSound.play(); box.remove(); clearInterval(fall);
     }
     if(top>gameDiv.clientHeight){ lives--; updateLives(); if(soundOn) missSound.play(); box.remove(); clearInterval(fall);}
@@ -113,8 +118,14 @@ function gameOver(){
 restartBtn.onclick=()=>startGame(currentLevel);
 
 // ---- SETTINGS ----
-settingsBtn.onclick=()=>settingsMenu.style.display="block";
-closeSettings.onclick=()=>settingsMenu.style.display="none";
+settingsBtn.onclick=()=>{
+  gamePaused=true;
+  settingsMenu.style.display="block";
+}
+closeSettings.onclick()=>{
+  settingsMenu.style.display="none";
+  gamePaused=false;
+}
 musicToggle.onchange=()=>{musicOn=musicToggle.checked; if(musicOn&&!isGameOver) bgMusic.play(); else bgMusic.pause();}
 soundToggle.onchange=()=>{soundOn=soundToggle.checked;}
 
